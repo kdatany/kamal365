@@ -11,11 +11,11 @@ import Share from "../components/share";
 export default class blogPost extends Component {
   render() {
     const data = this.props.data.contentfulBlogs;
-    const disqusShortname = "KamalDeiratany";
-    const disqusConfig = {
-      identifier: data.id,
-      title: data.title
-    };
+    // const disqusShortname = "kamaldeiratany";
+    // const disqusConfig = {
+    //   identifier: data.id,
+    //   title: data.title
+    // };
 
     const siteurl = this.props.data.contentfulSiteInformation.siteUrl + "/";
     const twiteerhandle = this.props.data.contentfulSiteInformation
@@ -72,10 +72,10 @@ export default class blogPost extends Component {
                 }
               }}
             />
-            <DiscussionEmbed
+            {/* <DiscussionEmbed
               shortname={disqusShortname}
               config={disqusConfig}
-            />
+            /> */}
           </div>
         </div>
       </Layout>
