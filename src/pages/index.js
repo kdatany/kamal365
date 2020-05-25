@@ -17,9 +17,15 @@ const IndexPage = ({ data }) => (
   <Layout header="home">
     <SEO
       title={data.contentfulAboutMe.designation}
-      keywords={[`Rohit Gupta`, `Frontend Developer`, `Developer`]}
+      keywords={[`Kamal Deiratany`, `Microsoft 365 Engineer`]}
     />
     <Banner data={data.contentfulAboutMe}></Banner>
+
+    {data.contentfulSiteInformation.menus
+      .filter(item => item === "Blogs")
+      .map(t => {
+        return <Blogs data={data.allContentfulBlogs}></Blogs>;
+      })}
 
     {data.contentfulSiteInformation.menus
       .filter(item => item === "About")
@@ -33,11 +39,6 @@ const IndexPage = ({ data }) => (
         return <Service data={data.allContentfulService}></Service>;
       })}
 
-    {data.contentfulSiteInformation.menus
-      .filter(item => item === "Blogs")
-      .map(t => {
-        return <Blogs data={data.allContentfulBlogs}></Blogs>;
-      })}
 
     {data.contentfulSiteInformation.menus
       .filter(item => item === "Work")
@@ -88,12 +89,8 @@ export const pageQuery = graphql`
         }
       }
       designation
-      age
-      facebook
-      github
       gmail
       id
-      instagram
       linkdin
       twitter
       location

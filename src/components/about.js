@@ -28,31 +28,31 @@ const Header = ({ data }) => (
                 <strong>Full Name</strong>
                 <p>{data.name}</p>
               </li>
-              <li>
+              {/* <li>
                 <strong>Age</strong>
                 <p>{data.age} Years</p>
-              </li>
+              </li> */}
               <li>
                 <strong>Location</strong>
                 <p>{data.location}</p>
               </li>
-              <li>
+              {/* <li>
                 <strong>Email</strong>
                 <p>
                   <a href={`mailto:${data.gmail}`}>{data.gmail}</a>
                 </p>
-              </li>
+              </li> */}
             </ul>
             <div className="socials">
               <ul>
-                <li>
+                {/* <li>
                   <a
                     className="fab fa-facebook-f"
                     href={data.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                   ></a>
-                </li>
+                </li> */}
                 <li>
                   <a
                     className="fab fa-twitter"
@@ -61,14 +61,14 @@ const Header = ({ data }) => (
                     rel="noopener noreferrer"
                   ></a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     className="fab fa-instagram"
                     href={data.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                   ></a>
-                </li>
+                </li> */}
                 <li>
                   <a
                     className="fab fa-linkedin-in"
@@ -77,14 +77,14 @@ const Header = ({ data }) => (
                     rel="noopener noreferrer"
                   ></a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     className="fab fa-github"
                     href={data.github}
                     target="_blank"
                     rel="noopener noreferrer"
                   ></a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
