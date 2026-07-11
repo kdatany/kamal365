@@ -1,15 +1,13 @@
 import { create } from 'zustand'
 import type { ClassSession, StrengthSession, WorkoutClass } from '../types'
+import { fetchClasses, fetchClassSessions, fetchStrengthSessions } from '../lib/dataService'
 
 interface DataState {
   loading: boolean
   classes: WorkoutClass[]
   classSessions: ClassSession[]
   strengthSessions: StrengthSession[]
-  setLoading: (loading: boolean) => void
-  setClasses: (classes: WorkoutClass[]) => void
-  setClassSessions: (sessions: ClassSession[]) => void
-  setStrengthSessions: (sessions: StrengthSession[]) => void
+  refresh: (uid: string) => Promise<void>
   reset: () => void
 }
 
@@ -18,9 +16,14 @@ export const useDataStore = create<DataState>((set) => ({
   classes: [],
   classSessions: [],
   strengthSessions: [],
-  setLoading: (loading) => set({ loading }),
-  setClasses: (classes) => set({ classes }),
-  setClassSessions: (classSessions) => set({ classSessions }),
-  setStrengthSessions: (strengthSessions) => set({ strengthSessions }),
+  refresh: async (uid: string) => {
+    set({ loading: true })
+    const [classes, classSessions, strengthSessions] = await Promise.all([
+      fetchClasses(uid),
+      fetchClassSessions(uid),
+      fetchStrengthSessions(uid),
+    ])
+    set({ classes, classSessions, strengthSessions, loading: false })
+  },
   reset: () => set({ classes: [], classSessions: [], strengthSessions: [], loading: true }),
 }))

@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { signOut } from '../lib/firebase'
+import { signOut } from '../lib/supabase'
 
 const navItems = [
   { to: '/', label: 'Home', icon: HomeIcon },

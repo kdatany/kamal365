@@ -7,7 +7,7 @@ import type { LoggedEntry, StrengthSession, WorkoutClass } from '../types'
 
 export function useData() {
   const { user } = useAuth()
-  const { classes, classSessions, strengthSessions, loading } = useDataStore()
+  const { classes, classSessions, strengthSessions, loading, refresh } = useDataStore()
 
   const allClasses: WorkoutClass[] = useMemo(() => {
     const customNames = new Set(classes.map((c) => c.name.toLowerCase()))
@@ -40,17 +40,21 @@ export function useData() {
 
   async function addClass(name: string, color: string) {
     if (!user) throw new Error('Not signed in')
-    return addCustomClass(user.uid, name, color)
+    const id = await addCustomClass(user.id, name, color)
+    await refresh(user.id)
+    return id
   }
 
   async function checkInClass(classId: string, className: string, date: string) {
     if (!user) throw new Error('Not signed in')
-    return logClassSession(user.uid, classId, className, date)
+    await logClassSession(user.id, classId, className, date)
+    await refresh(user.id)
   }
 
   async function saveStrengthSession(session: Omit<StrengthSession, 'id' | 'createdAt'>) {
     if (!user) throw new Error('Not signed in')
-    return logStrengthSession(user.uid, session)
+    await logStrengthSession(user.id, session)
+    await refresh(user.id)
   }
 
   return {

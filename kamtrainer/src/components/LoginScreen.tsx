@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { signInWithGoogle, isFirebaseConfigured } from '../lib/firebase'
+import { signInWithGoogle, isSupabaseConfigured } from '../lib/supabase'
 
 export function LoginScreen() {
   const [error, setError] = useState<string | null>(null)
@@ -29,9 +29,9 @@ export function LoginScreen() {
         </p>
       </div>
 
-      {!isFirebaseConfigured ? (
+      {!isSupabaseConfigured ? (
         <div className="max-w-sm rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-ink-soft)]">
-          Firebase isn&apos;t configured yet. Add your Firebase web config to a{' '}
+          Supabase isn&apos;t configured yet. Add your Supabase project URL and anon key to a{' '}
           <code className="rounded bg-[var(--color-brand-soft)] px-1 py-0.5">.env.local</code> file
           (see <code className="rounded bg-[var(--color-brand-soft)] px-1 py-0.5">.env.example</code>
           ) to enable sign-in and cloud sync.

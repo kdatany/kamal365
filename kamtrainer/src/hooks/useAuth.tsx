@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import { onAuthStateChanged, type User } from 'firebase/auth'
-import { auth, isFirebaseConfigured } from '../lib/firebase'
+import type { User } from '@supabase/supabase-js'
+import { isSupabaseConfigured, supabase } from '../lib/supabase'
 
 interface AuthContextValue {
   user: User | null
@@ -14,15 +14,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [authLoading, setAuthLoading] = useState(true)
 
   useEffect(() => {
-    if (!isFirebaseConfigured) {
+    if (!isSupabaseConfigured) {
       setAuthLoading(false)
       return
     }
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u)
+
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null)
       setAuthLoading(false)
     })
-    return unsubscribe
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      setAuthLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   return <AuthContext.Provider value={{ user, authLoading }}>{children}</AuthContext.Provider>

@@ -3,8 +3,7 @@
 A personal workout tracker & ankle-friendly lifting assistant. Log gym classes
 (Liftonics, St Marks Yoga, Solidcore, SoulCycle, or your own), run pre-designed
 low ankle-impact strength workouts with a live timer and exercise checklist,
-and see everything on a calendar. Data syncs to your account via Firebase and
-works offline.
+and see everything on a calendar. Data syncs to your account via Supabase.
 
 ## Stack
 
@@ -12,7 +11,7 @@ works offline.
 - React Router (multi-page)
 - Tailwind CSS v4
 - Zustand for local state
-- Firebase Auth (Google sign-in) + Firestore (with offline persistence)
+- Supabase Auth (Google sign-in) + Postgres
 
 ## Setup
 
@@ -20,31 +19,36 @@ works offline.
 npm install
 ```
 
-### Firebase (required for sign-in & cloud sync)
+### Supabase (required for sign-in & cloud sync)
 
-1. Create a free project at <https://console.firebase.google.com>.
-2. In **Build > Authentication > Sign-in method**, enable **Google**.
-3. In **Build > Firestore Database**, create a database (production mode is fine —
-   rules are provided below).
-4. In **Project settings > General > Your apps**, add a **Web app** and copy
-   the config values.
-5. Copy `.env.example` to `.env.local` and fill in the values:
+1. Create a free project at <https://supabase.com/dashboard>.
+2. In **Authentication > Providers**, enable **Google** and fill in an OAuth
+   client ID/secret (Google Cloud Console -> Credentials -> OAuth client ID,
+   with the Supabase callback URL from that same provider screen added as an
+   authorized redirect URI).
+3. In **Authentication > URL Configuration**, add your dev URL
+   (`http://localhost:5173`) and your deployed URL (e.g. your Netlify domain)
+   to **Redirect URLs**.
+4. Open the **SQL Editor**, paste the contents of `supabase/schema.sql`, and
+   run it. This creates the `classes`, `class_sessions`, and
+   `strength_sessions` tables with row-level security so each user can only
+   read/write their own rows.
+5. In **Project settings > API**, copy the **Project URL** and **anon public**
+   key.
+6. Copy `.env.example` to `.env.local` and fill in the values:
 
    ```sh
    cp .env.example .env.local
    ```
 
-6. Deploy the included security rules (or paste `firestore.rules` into the
-   Firestore console's Rules tab) so each user can only read/write their own
-   data:
-
-   ```sh
-   firebase deploy --only firestore:rules
-   ```
-
 Without a configured `.env.local`, the app still runs and the workout
 library/calendar UI is browsable, but sign-in is skipped and nothing can be
 saved (all actions need a signed-in user).
+
+Note: unlike Firestore, the Supabase JS client doesn't queue writes while
+offline — actions made without a connection will fail until you're back
+online. Data still refetches automatically whenever the app reloads or you
+sign in.
 
 ## Develop
 

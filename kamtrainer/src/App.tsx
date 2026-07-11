@@ -10,12 +10,12 @@ import { WorkoutLibrary } from './pages/WorkoutLibrary'
 import { WorkoutDetail } from './pages/WorkoutDetail'
 import { ActiveWorkout } from './pages/ActiveWorkout'
 import { Calendar } from './pages/Calendar'
-import { isFirebaseConfigured } from './lib/firebase'
+import { isSupabaseConfigured } from './lib/supabase'
 
 function AppRoutes() {
   const { user, authLoading } = useAuth()
 
-  if (isFirebaseConfigured && authLoading) {
+  if (isSupabaseConfigured && authLoading) {
     return (
       <div className="flex min-h-svh items-center justify-center text-[var(--color-ink-soft)]">
         Loading…
@@ -23,7 +23,7 @@ function AppRoutes() {
     )
   }
 
-  if (isFirebaseConfigured && !user) {
+  if (isSupabaseConfigured && !user) {
     return <LoginScreen />
   }
 
