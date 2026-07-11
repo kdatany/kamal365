@@ -12,6 +12,7 @@ and see everything on a calendar. Data syncs to your account via Supabase.
 - Tailwind CSS v4
 - Zustand for local state
 - Supabase Auth (Google sign-in) + Postgres
+- Netlify Function + Claude API (Ask the Coach chat)
 
 ## Setup
 
@@ -49,6 +50,37 @@ Note: unlike Firestore, the Supabase JS client doesn't queue writes while
 offline — actions made without a connection will fail until you're back
 online. Data still refetches automatically whenever the app reloads or you
 sign in.
+
+### Ask the Coach (Claude API, optional)
+
+The "Ask the Coach" chat on the Workouts page (`/coach`) lets you ask for a
+specific move or routine. It's answered by Claude through a small server-side
+proxy (`netlify/functions/chat.ts`) — your Anthropic API key never reaches the
+browser.
+
+1. Get an API key from <https://console.anthropic.com>.
+2. Set it as a Netlify **environment variable** (Site settings > Environment
+   variables), **not** in `.env.local` and **not** prefixed with `VITE_`
+   (either would ship it to the browser):
+
+   ```
+   ANTHROPIC_API_KEY=sk-ant-...
+   ```
+
+3. Redeploy so the function picks up the variable.
+
+Without this configured, the rest of the app works fine — only the coach chat
+will show an error when you try to send a message.
+
+**Local testing:** plain `npm run dev` (Vite) doesn't run Netlify Functions.
+Use the Netlify CLI instead so `/api/chat` resolves locally:
+
+```sh
+npm install -g netlify-cli
+netlify dev
+```
+
+(with `ANTHROPIC_API_KEY` set in your shell or a `.env` file the CLI picks up).
 
 ## Develop
 

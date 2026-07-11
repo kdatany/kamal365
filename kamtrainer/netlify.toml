@@ -2,6 +2,16 @@
   command = "npm run build"
   publish = "dist"
 
+[functions]
+  directory = "netlify/functions"
+
+# Clean URL for the chat function. Must come before the SPA catch-all below —
+# Netlify redirects are evaluated in order and the first match wins.
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
 # Single-page app: send all non-file routes to index.html so React Router
 # can handle client-side paths like /calendar, /workout/:id, etc.
 [[redirects]]

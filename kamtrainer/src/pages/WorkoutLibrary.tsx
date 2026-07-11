@@ -33,6 +33,21 @@ export function WorkoutLibrary() {
         </p>
       </details>
 
+      <Link
+        to="/coach"
+        className="flex items-center gap-3 rounded-2xl border border-dashed border-[var(--color-brand)] bg-[var(--color-brand-soft)] p-4 transition hover:border-solid"
+      >
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-lg text-white">
+          💬
+        </span>
+        <div>
+          <p className="font-semibold text-[var(--color-brand-dark)]">Ask the Coach</p>
+          <p className="text-sm text-[var(--color-ink-soft)]">
+            Not seeing what you need? Ask for a specific move or routine.
+          </p>
+        </div>
+      </Link>
+
       <ul className="flex flex-col gap-3">
         {workouts.map((w) => (
           <li key={w.id}>

@@ -10,6 +10,7 @@ import { WorkoutLibrary } from './pages/WorkoutLibrary'
 import { WorkoutDetail } from './pages/WorkoutDetail'
 import { ActiveWorkout } from './pages/ActiveWorkout'
 import { Calendar } from './pages/Calendar'
+import { Coach } from './pages/Coach'
 import { isSupabaseConfigured } from './lib/supabase'
 
 function AppRoutes() {
@@ -36,6 +37,7 @@ function AppRoutes() {
           <Route path="/start/class" element={<ClassPicker />} />
           <Route path="/start/strength" element={<WorkoutLibrary />} />
           <Route path="/library" element={<WorkoutLibrary />} />
+          <Route path="/coach" element={<Coach />} />
           <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
           <Route path="/workout/:workoutId/active" element={<ActiveWorkout />} />
           <Route path="/calendar" element={<Calendar />} />
