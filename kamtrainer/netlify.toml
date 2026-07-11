@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Single-page app: send all non-file routes to index.html so React Router
+# can handle client-side paths like /calendar, /workout/:id, etc.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
