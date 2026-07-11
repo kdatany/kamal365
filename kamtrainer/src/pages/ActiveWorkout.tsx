@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { getWorkoutById } from '../data/workouts'
-import { ExerciseIllustration } from '../components/ExerciseIllustration'
+import { ExerciseLink } from '../components/ExerciseLink'
 import { useStopwatch } from '../hooks/useStopwatch'
 import { useData } from '../hooks/useData'
 import { todayISO, formatDuration } from '../lib/date'
@@ -78,13 +78,13 @@ export function ActiveWorkout() {
                   : 'border-[var(--color-line)] bg-[var(--color-surface)]'
               }`}
             >
-              <ExerciseIllustration pattern={ex.pattern} className="h-20 w-20 shrink-0" />
               <div className="flex-1">
                 <p className="font-semibold">{ex.name}</p>
                 <p className="text-sm text-[var(--color-ink-soft)]">
                   {ex.sets} sets × {ex.reps} · rest {ex.restSeconds}s
                 </p>
                 <p className="mt-1 text-sm">{ex.cue}</p>
+                <ExerciseLink href={ex.link} />
               </div>
               <button
                 onClick={() => toggle(ex.id)}

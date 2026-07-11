@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { getWorkoutById } from '../data/workouts'
-import { ExerciseIllustration } from '../components/ExerciseIllustration'
+import { ExerciseLink } from '../components/ExerciseLink'
 
 export function WorkoutDetail() {
   const { workoutId } = useParams<{ workoutId: string }>()
@@ -22,22 +22,20 @@ export function WorkoutDetail() {
         {workout.exercises.map((ex, i) => (
           <li
             key={ex.id}
-            className="flex gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+            className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
           >
-            <ExerciseIllustration pattern={ex.pattern} className="h-20 w-20 shrink-0" />
-            <div className="flex-1">
-              <p className="text-xs font-medium text-[var(--color-ink-soft)]">
-                {i + 1}. {ex.primaryMuscle} · {ex.equipment}
-              </p>
-              <p className="font-semibold">{ex.name}</p>
-              <p className="text-sm text-[var(--color-ink-soft)]">
-                {ex.sets} sets × {ex.reps} · rest {ex.restSeconds}s
-              </p>
-              <p className="mt-1 text-sm">{ex.cue}</p>
-              {ex.ankleNote && (
-                <p className="mt-1 text-xs text-[var(--color-accent)]">🦶 {ex.ankleNote}</p>
-              )}
-            </div>
+            <p className="text-xs font-medium text-[var(--color-ink-soft)]">
+              {i + 1}. {ex.primaryMuscle} · {ex.equipment}
+            </p>
+            <p className="font-semibold">{ex.name}</p>
+            <p className="text-sm text-[var(--color-ink-soft)]">
+              {ex.sets} sets × {ex.reps} · rest {ex.restSeconds}s
+            </p>
+            <p className="mt-1 text-sm">{ex.cue}</p>
+            {ex.ankleNote && (
+              <p className="mt-1 text-xs text-[var(--color-accent)]">🦶 {ex.ankleNote}</p>
+            )}
+            <ExerciseLink href={ex.link} />
           </li>
         ))}
       </ul>

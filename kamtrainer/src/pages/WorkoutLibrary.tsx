@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom'
 import { workouts, AVOIDED_MOVEMENTS } from '../data/workouts'
-import { ExerciseIllustration } from '../components/ExerciseIllustration'
+
+const WORKOUT_EMOJI: Record<string, string> = {
+  'lower-ankle-safe': '🦵',
+  'upper-push': '💪',
+  'upper-pull': '🏋️',
+  'glutes-core': '🍑',
+  'full-body-circuit': '🔁',
+}
 
 export function WorkoutLibrary() {
   return (
@@ -33,10 +40,9 @@ export function WorkoutLibrary() {
               to={`/workout/${w.id}`}
               className="flex items-center gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-brand)]"
             >
-              <ExerciseIllustration
-                pattern={w.exercises[0].pattern}
-                className="h-16 w-16 shrink-0"
-              />
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[var(--color-brand-soft)] text-2xl">
+                {WORKOUT_EMOJI[w.id] ?? '🏋️'}
+              </span>
               <div className="flex-1">
                 <p className="font-semibold">{w.name}</p>
                 <p className="text-sm text-[var(--color-ink-soft)]">{w.focus}</p>

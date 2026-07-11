@@ -1,25 +1,3 @@
-// Movement pattern used to pick a reusable illustration for an exercise.
-export type MovementPattern =
-  | 'legPress'
-  | 'legExtension'
-  | 'legCurl'
-  | 'hipThrust'
-  | 'hipHinge'
-  | 'adduction'
-  | 'abduction'
-  | 'chestPress'
-  | 'row'
-  | 'latPulldown'
-  | 'shoulderPress'
-  | 'lateralRaise'
-  | 'bicepCurl'
-  | 'tricepPushdown'
-  | 'plank'
-  | 'deadBug'
-  | 'cablePullThrough'
-  | 'gluteKickback'
-  | 'calfRaise'
-
 export interface WorkoutExercise {
   id: string
   name: string
@@ -28,9 +6,10 @@ export interface WorkoutExercise {
   restSeconds: number
   primaryMuscle: string
   equipment: string
-  pattern: MovementPattern
   cue: string
   ankleNote?: string
+  // External page with real photos/video of the move (MuscleWiki, StrengthLog, etc.)
+  link: string
 }
 
 export interface StrengthWorkout {
