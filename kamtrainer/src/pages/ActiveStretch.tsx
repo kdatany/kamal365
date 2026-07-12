@@ -38,6 +38,7 @@ export function ActiveStretch() {
   const [secondsLeft, setSecondsLeft] = useState(steps[0]?.stretch.holdSeconds ?? 0)
   const [completed, setCompleted] = useState<Set<string>>(new Set())
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const elapsed = useStopwatch(true)
 
   const step = steps[stepIndex]
@@ -77,6 +78,7 @@ export function ActiveStretch() {
       ? new Set(completed).add(step.stretch.id)
       : completed
     setSaving(true)
+    setError(null)
     try {
       await saveStretchSession({
         routineId: routine.id,
@@ -87,6 +89,8 @@ export function ActiveStretch() {
         totalStretches: routine.stretchIds.length,
       })
       navigate('/')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not save this stretch session. Try again.')
     } finally {
       setSaving(false)
     }
@@ -132,6 +136,12 @@ export function ActiveStretch() {
         )}
         <ExerciseLink href={step.stretch.link} />
       </div>
+
+      {error && (
+        <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-500">
+          {error}
+        </p>
+      )}
 
       <button
         onClick={advance}

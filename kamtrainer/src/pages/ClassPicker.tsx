@@ -11,13 +11,17 @@ export function ClassPicker() {
   const [newName, setNewName] = useState('')
   const [busyId, setBusyId] = useState<string | null>(null)
   const [confirmed, setConfirmed] = useState<{ name: string; count: number } | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   async function handleCheckIn(classId: string, className: string) {
     setBusyId(classId)
+    setError(null)
     try {
       await checkInClass(classId, className, todayISO())
       const priorCount = classCounts.get(classId) ?? 0
       setConfirmed({ name: className, count: priorCount + 1 })
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not log that class. Try again.')
     } finally {
       setBusyId(null)
     }
@@ -28,6 +32,7 @@ export function ClassPicker() {
     const name = newName.trim()
     if (!name) return
     setBusyId('new')
+    setError(null)
     try {
       const color = CLASS_COLOR_PALETTE[classes.length % CLASS_COLOR_PALETTE.length]
       const id = await addClass(name, color)
@@ -35,6 +40,8 @@ export function ClassPicker() {
       setConfirmed({ name, count: 1 })
       setNewName('')
       setAdding(false)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not add that class. Try again.')
     } finally {
       setBusyId(null)
     }
@@ -63,6 +70,13 @@ export function ClassPicker() {
   return (
     <div className="flex flex-col gap-6 pt-4">
       <h1 className="text-2xl font-semibold">Which class?</h1>
+
+      {error && (
+        <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-500">
+          {error}
+        </p>
+      )}
+
       <ul className="flex flex-col gap-2">
         {classes.map((c) => (
           <li key={c.id}>

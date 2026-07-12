@@ -14,6 +14,7 @@ export function ActiveWorkout() {
 
   const [done, setDone] = useState<Set<string>>(new Set())
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const elapsed = useStopwatch(true)
 
   if (!workout) return <Navigate to="/library" replace />
@@ -30,6 +31,7 @@ export function ActiveWorkout() {
   async function finish() {
     if (!workout) return
     setSaving(true)
+    setError(null)
     try {
       await saveStrengthSession({
         workoutId: workout.id,
@@ -40,6 +42,8 @@ export function ActiveWorkout() {
         totalExercises: workout.exercises.length,
       })
       navigate('/')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not save this workout. Try again.')
     } finally {
       setSaving(false)
     }
@@ -102,7 +106,12 @@ export function ActiveWorkout() {
         })}
       </ul>
 
-      <div className="fixed inset-x-0 bottom-20 z-10 mx-auto w-full max-w-xl px-5">
+      <div className="fixed inset-x-0 bottom-20 z-10 mx-auto flex w-full max-w-xl flex-col gap-2 px-5">
+        {error && (
+          <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-500 shadow-lg">
+            {error}
+          </p>
+        )}
         <button
           onClick={finish}
           disabled={saving}
