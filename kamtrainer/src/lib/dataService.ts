@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { ClassSession, StrengthSession, WorkoutClass } from '../types'
+import type { ClassSession, StretchSession, StrengthSession, WorkoutClass } from '../types'
 
 interface ClassRow {
   id: string
@@ -28,6 +28,17 @@ interface StrengthSessionRow {
   created_at: string
 }
 
+interface StretchSessionRow {
+  id: string
+  routine_id: string
+  routine_name: string
+  date: string
+  duration_seconds: number
+  completed_stretch_ids: string[]
+  total_stretches: number
+  created_at: string
+}
+
 function toClass(row: ClassRow): WorkoutClass {
   return { id: row.id, name: row.name, color: row.color, preset: row.preset, createdAt: row.created_at }
 }
@@ -52,6 +63,19 @@ function toStrengthSession(row: StrengthSessionRow): StrengthSession {
     durationSeconds: row.duration_seconds,
     completedExerciseIds: row.completed_exercise_ids,
     totalExercises: row.total_exercises,
+  }
+}
+
+function toStretchSession(row: StretchSessionRow): StretchSession {
+  return {
+    id: row.id,
+    routineId: row.routine_id,
+    routineName: row.routine_name,
+    date: row.date,
+    createdAt: row.created_at,
+    durationSeconds: row.duration_seconds,
+    completedStretchIds: row.completed_stretch_ids,
+    totalStretches: row.total_stretches,
   }
 }
 
@@ -83,6 +107,16 @@ export async function fetchStrengthSessions(uid: string): Promise<StrengthSessio
     .order('date', { ascending: false })
   if (error) throw error
   return (data as StrengthSessionRow[]).map(toStrengthSession)
+}
+
+export async function fetchStretchSessions(uid: string): Promise<StretchSession[]> {
+  const { data, error } = await supabase
+    .from('stretch_sessions')
+    .select('*')
+    .eq('user_id', uid)
+    .order('date', { ascending: false })
+  if (error) throw error
+  return (data as StretchSessionRow[]).map(toStretchSession)
 }
 
 export async function addCustomClass(uid: string, name: string, color: string): Promise<string> {
@@ -119,6 +153,22 @@ export async function logStrengthSession(
     duration_seconds: session.durationSeconds,
     completed_exercise_ids: session.completedExerciseIds,
     total_exercises: session.totalExercises,
+  })
+  if (error) throw error
+}
+
+export async function logStretchSession(
+  uid: string,
+  session: Omit<StretchSession, 'id' | 'createdAt'>,
+) {
+  const { error } = await supabase.from('stretch_sessions').insert({
+    user_id: uid,
+    routine_id: session.routineId,
+    routine_name: session.routineName,
+    date: session.date,
+    duration_seconds: session.durationSeconds,
+    completed_stretch_ids: session.completedStretchIds,
+    total_stretches: session.totalStretches,
   })
   if (error) throw error
 }

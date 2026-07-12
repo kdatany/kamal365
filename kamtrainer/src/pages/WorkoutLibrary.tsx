@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { workouts, AVOIDED_MOVEMENTS } from '../data/workouts'
+import { SectionToggle } from '../components/SectionToggle'
 
 const WORKOUT_EMOJI: Record<string, string> = {
   'lower-ankle-safe': '🦵',
@@ -12,6 +13,8 @@ const WORKOUT_EMOJI: Record<string, string> = {
 export function WorkoutLibrary() {
   return (
     <div className="flex flex-col gap-6 pt-4">
+      <SectionToggle active="strength" />
+
       <div>
         <h1 className="text-2xl font-semibold">Ankle-Safe Workouts</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-soft)]">

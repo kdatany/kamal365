@@ -14,6 +14,7 @@ import {
 } from 'date-fns'
 import { useData } from '../hooks/useData'
 import { todayISO, formatDuration } from '../lib/date'
+import { ENTRY_BADGE_CLASS, ENTRY_BADGE_LABEL, ENTRY_DOT_COLOR, entryTitle } from '../lib/entryDisplay'
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
@@ -82,10 +83,7 @@ export function Calendar() {
                   <span
                     key={i}
                     className="h-1.5 w-1.5 rounded-full"
-                    style={{
-                      background:
-                        e.kind === 'class' ? 'var(--color-accent)' : 'var(--color-brand)',
-                    }}
+                    style={{ background: ENTRY_DOT_COLOR[e.kind] }}
                   />
                 ))}
               </span>
@@ -110,22 +108,22 @@ export function Calendar() {
                 className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3"
               >
                 <div>
-                  <p className="font-medium">{e.kind === 'class' ? e.className : e.workoutName}</p>
+                  <p className="font-medium">{entryTitle(e)}</p>
                   {e.kind === 'strength' && (
                     <p className="text-xs text-[var(--color-ink-soft)]">
                       {e.completedExerciseIds.length}/{e.totalExercises} exercises ·{' '}
                       {formatDuration(e.durationSeconds)}
                     </p>
                   )}
+                  {e.kind === 'stretch' && (
+                    <p className="text-xs text-[var(--color-ink-soft)]">
+                      {e.completedStretchIds.length}/{e.totalStretches} stretches ·{' '}
+                      {formatDuration(e.durationSeconds)}
+                    </p>
+                  )}
                 </div>
-                <span
-                  className={`rounded-full px-2 py-1 text-xs font-medium ${
-                    e.kind === 'class'
-                      ? 'bg-[var(--color-accent-soft)] text-[var(--color-accent)]'
-                      : 'bg-[var(--color-brand-soft)] text-[var(--color-brand-dark)]'
-                  }`}
-                >
-                  {e.kind === 'class' ? 'Class' : 'Strength'}
+                <span className={`rounded-full px-2 py-1 text-xs font-medium ${ENTRY_BADGE_CLASS[e.kind]}`}>
+                  {ENTRY_BADGE_LABEL[e.kind]}
                 </span>
               </li>
             ))}

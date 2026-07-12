@@ -11,6 +11,8 @@
   --color-brand-soft: #ffe8e1;
   --color-accent: #1f8a70;
   --color-accent-soft: #e2f4ee;
+  --color-stretch: #3c6cff;
+  --color-stretch-soft: #e4eaff;
 
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
@@ -32,6 +34,8 @@
     --color-brand-soft: #3a2019;
     --color-accent: #35c39a;
     --color-accent-soft: #103029;
+    --color-stretch: #7d9bff;
+    --color-stretch-soft: #1c2340;
   }
 }
 

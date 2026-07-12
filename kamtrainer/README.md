@@ -2,8 +2,9 @@
 
 A personal workout tracker & ankle-friendly lifting assistant. Log gym classes
 (Liftonics, St Marks Yoga, Solidcore, SoulCycle, or your own), run pre-designed
-low ankle-impact strength workouts with a live timer and exercise checklist,
-and see everything on a calendar. Data syncs to your account via Supabase.
+low ankle-impact strength workouts or guided stretch routines with a live
+timer, and see everything on a calendar. Data syncs to your account via
+Supabase.
 
 ## Stack
 
@@ -31,9 +32,11 @@ npm install
    (`http://localhost:5173`) and your deployed URL (e.g. your Netlify domain)
    to **Redirect URLs**.
 4. Open the **SQL Editor**, paste the contents of `supabase/schema.sql`, and
-   run it. This creates the `classes`, `class_sessions`, and
-   `strength_sessions` tables with row-level security so each user can only
-   read/write their own rows.
+   run it. This creates the `classes`, `class_sessions`, `strength_sessions`,
+   and `stretch_sessions` tables with row-level security so each user can
+   only read/write their own rows. (If you set up Supabase before the
+   stretching feature existed, run `supabase/migrations/002_stretch_sessions.sql`
+   instead — `schema.sql` would error on policies that already exist.)
 5. In **Project settings > API**, copy the **Project URL** and **anon public**
    key.
 6. Copy `.env.example` to `.env.local` and fill in the values:

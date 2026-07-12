@@ -2,12 +2,18 @@ import { useMemo } from 'react'
 import { useAuth } from './useAuth'
 import { useDataStore } from '../store/dataStore'
 import { PRESET_CLASSES } from '../data/classes'
-import { addCustomClass, logClassSession, logStrengthSession } from '../lib/dataService'
-import type { LoggedEntry, StrengthSession, WorkoutClass } from '../types'
+import {
+  addCustomClass,
+  logClassSession,
+  logStrengthSession,
+  logStretchSession,
+} from '../lib/dataService'
+import type { LoggedEntry, StretchSession, StrengthSession, WorkoutClass } from '../types'
 
 export function useData() {
   const { user } = useAuth()
-  const { classes, classSessions, strengthSessions, loading, refresh } = useDataStore()
+  const { classes, classSessions, strengthSessions, stretchSessions, loading, refresh } =
+    useDataStore()
 
   const allClasses: WorkoutClass[] = useMemo(() => {
     const customNames = new Set(classes.map((c) => c.name.toLowerCase()))
@@ -35,8 +41,13 @@ export function useData() {
       list.push({ kind: 'strength', ...s })
       map.set(s.date, list)
     }
+    for (const s of stretchSessions) {
+      const list = map.get(s.date) ?? []
+      list.push({ kind: 'stretch', ...s })
+      map.set(s.date, list)
+    }
     return map
-  }, [classSessions, strengthSessions])
+  }, [classSessions, strengthSessions, stretchSessions])
 
   async function addClass(name: string, color: string) {
     if (!user) throw new Error('Not signed in')
@@ -57,15 +68,23 @@ export function useData() {
     await refresh(user.id)
   }
 
+  async function saveStretchSession(session: Omit<StretchSession, 'id' | 'createdAt'>) {
+    if (!user) throw new Error('Not signed in')
+    await logStretchSession(user.id, session)
+    await refresh(user.id)
+  }
+
   return {
     loading,
     classes: allClasses,
     classSessions,
     strengthSessions,
+    stretchSessions,
     classCounts,
     entriesByDate,
     addClass,
     checkInClass,
     saveStrengthSession,
+    saveStretchSession,
   }
 }

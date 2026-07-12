@@ -21,6 +21,37 @@ export interface StrengthWorkout {
   exercises: WorkoutExercise[]
 }
 
+export type StretchCategory =
+  | 'Neck & Shoulders'
+  | 'Chest & Upper Back'
+  | 'Arms & Wrists'
+  | 'Core & Low Back'
+  | 'Hips & Glutes'
+  | 'Hamstrings & Quads'
+  | 'Calves & Ankles'
+
+export interface Stretch {
+  id: string
+  name: string
+  category: StretchCategory
+  target: string
+  holdSeconds: number
+  eachSide: boolean
+  cue: string
+  ankleNote?: string
+  // External page with real photos/video of the stretch (ExRx.net, MuscleWiki, etc.)
+  link: string
+}
+
+export interface StretchRoutine {
+  id: string
+  name: string
+  focus: string
+  estMinutes: number
+  summary: string
+  stretchIds: string[]
+}
+
 // A gym class the user attends (preset or custom).
 export interface WorkoutClass {
   id: string
@@ -51,6 +82,19 @@ export interface StrengthSession {
   totalExercises: number
 }
 
+// One completed stretch routine.
+export interface StretchSession {
+  id: string
+  routineId: string
+  routineName: string
+  date: string // ISO date (yyyy-MM-dd)
+  createdAt: string // ISO datetime
+  durationSeconds: number
+  completedStretchIds: string[]
+  totalStretches: number
+}
+
 export type LoggedEntry =
   | ({ kind: 'class' } & ClassSession)
   | ({ kind: 'strength' } & StrengthSession)
+  | ({ kind: 'stretch' } & StretchSession)

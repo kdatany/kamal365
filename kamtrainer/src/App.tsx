@@ -11,6 +11,9 @@ import { WorkoutDetail } from './pages/WorkoutDetail'
 import { ActiveWorkout } from './pages/ActiveWorkout'
 import { Calendar } from './pages/Calendar'
 import { Coach } from './pages/Coach'
+import { StretchLibrary } from './pages/StretchLibrary'
+import { StretchDetail } from './pages/StretchDetail'
+import { ActiveStretch } from './pages/ActiveStretch'
 import { isSupabaseConfigured } from './lib/supabase'
 
 function AppRoutes() {
@@ -40,6 +43,9 @@ function AppRoutes() {
           <Route path="/coach" element={<Coach />} />
           <Route path="/workout/:workoutId" element={<WorkoutDetail />} />
           <Route path="/workout/:workoutId/active" element={<ActiveWorkout />} />
+          <Route path="/stretches" element={<StretchLibrary />} />
+          <Route path="/stretch/:routineId" element={<StretchDetail />} />
+          <Route path="/stretch/:routineId/active" element={<ActiveStretch />} />
           <Route path="/calendar" element={<Calendar />} />
         </Route>
       </Routes>
